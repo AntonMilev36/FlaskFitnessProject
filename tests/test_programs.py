@@ -1,6 +1,6 @@
 import copy
 
-from models import RoleType, ProgramModel
+from models import RoleType, ProgramModel, ProgramExercise
 from tests.base import BaseAPITest
 from tests.factories import UserFactory, ExerciseFactory, ProgramFactory
 
@@ -109,7 +109,6 @@ class TestCreateProgram(BaseAPITest):
             resp.status_code,
             400
         )
-
         for field in expected_fields:
             self.assertIn(
                 field,
@@ -117,6 +116,10 @@ class TestCreateProgram(BaseAPITest):
             )
         self.objects_count_in_database(
             ProgramModel,
+            0
+        )
+        self.objects_count_in_database(
+            ProgramExercise,
             0
         )
 
@@ -149,6 +152,10 @@ class TestCreateProgram(BaseAPITest):
             ProgramModel,
             0
         )
+        self.objects_count_in_database(
+            ProgramExercise,
+            0
+        )
 
     def test_create_program_successfully(self):
         exercise = ExerciseFactory()
@@ -178,15 +185,17 @@ class TestCreateProgram(BaseAPITest):
             resp.status_code,
             201
         )
-
         for field in expected_fields:
             self.assertIn(
                 field,
                 str(resp.json)
             )
-
         self.objects_count_in_database(
             ProgramModel,
+            1
+        )
+        self.objects_count_in_database(
+            ProgramExercise,
             1
         )
 

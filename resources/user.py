@@ -13,7 +13,10 @@ class AddProgramToUser(Resource):
     def post(self, program_pk):
         user = auth.current_user()
         UserManager.add_program(user, program_pk)
-        return {"message": "Program is successfully added"}
+        return {
+            "message":
+                "Program is successfully added"
+        }
 
 
 class UserProgramsList(Resource):
@@ -22,7 +25,9 @@ class UserProgramsList(Resource):
     def get(self):
         user = auth.current_user()
         programs = UserManager.get_all_user_programs(user)
-        return {"message": ProgramResponseSchema().dump(programs, many=True)}
+        return ProgramResponseSchema().dump(
+            programs, many=True
+        )
 
 
 class UserSpecificProgram(Resource):
@@ -30,5 +35,21 @@ class UserSpecificProgram(Resource):
     @permission_required([RoleType.user, RoleType.super_user])
     def get(self, program_pk):
         user = auth.current_user()
-        program = UserManager.get_specific_program(user, program_pk)
+        program = UserManager.get_specific_program(
+            user,
+            program_pk
+        )
+
         return ProgramResponseSchema().dump(program)
+
+
+class UserDeleteProgram(Resource):
+    @auth.login_required
+    @permission_required([RoleType.user, RoleType.super_user])
+    def delete(self, program_pk):
+        UserManager.user_delete_program(program_pk)
+
+        return {
+            "message":
+                f"Program with pk={program_pk} is deleted successfully"
+        }

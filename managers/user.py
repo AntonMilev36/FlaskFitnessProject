@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from werkzeug.exceptions import BadRequest, Conflict
+from werkzeug.exceptions import BadRequest, Conflict, NotFound
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import db
@@ -48,12 +48,33 @@ class UserManager(Resource):
     @staticmethod
     def get_all_user_programs(user: UserModel):
         programs = user.programs
+
+        if not programs:
+            raise NotFound(
+                "You don't have any programs yet"
+            )
+
         return programs
 
     @staticmethod
     def get_specific_program(user: UserModel, program_pk):
         program = [p for p in user.programs if p.pk == program_pk]
+
         if not program:
-            raise BadRequest("This program does not exist")
-        program = program.pop()
-        return program
+            raise NotFound(
+                "This program doesn't exist or is not added to your list"
+            )
+
+        return program.pop()
+
+    @staticmethod
+    def user_delete_program(program_pk):
+        program = db.session.execute(
+            db.select(ProgramModel).filter_by(pk=program_pk)
+        ).scalar_one_or_none()
+
+        if program is None:
+            raise NotFound(
+                "This program doesn't exist or is not added to your list"
+            )
+
