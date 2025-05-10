@@ -4,7 +4,6 @@ from tests.factories import UserFactory
 
 
 class TestTrainer(BaseAPITest):
-
     ADD_ENDPOINT = "/admin/set/trainer/9"
     REMOVE_ENDPOINT = "/admin/remove/trainer/9"
 

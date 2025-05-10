@@ -3,7 +3,6 @@ from flask import jsonify
 from config import create_app
 from db import db
 
-
 environment = "config.DevelopmentConfig"
 app = create_app(environment)
 
@@ -31,6 +30,7 @@ def commit_transaction_on_teardown(exception=None):
                 }
             ), 500
         )
+
 
 @app.teardown_appcontext
 def shutdown_session(response, exception=None):

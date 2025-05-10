@@ -16,6 +16,8 @@ password_requirements = PasswordPolicy.from_names(
 """
     This is not better than the build in validator
 """
+
+
 # def validate_email(value):
 #     if not re.match(EMAIL_REGEX, value):
 #         raise ValidationError("Invalid email format.")

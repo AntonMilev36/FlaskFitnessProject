@@ -5,7 +5,6 @@ from tests.helpers import generate_token
 
 
 class TestProjectEndpoints(BaseAPITest):
-
     ENDPOINTS = (
         ("POST", "/trainers/exercise"),
         ("POST", "/trainers/program"),
@@ -44,10 +43,9 @@ class TestProjectEndpoints(BaseAPITest):
             self.assertEqual(
                 resp.json,
                 {
-                "message": "Invalid or missing token"
+                    "message": "Invalid or missing token"
                 }
             )
-
 
     def test_application_login_required_invalid_token(self):
         header = {"Authorization": "Bearer invalid_token"}
@@ -78,7 +76,7 @@ class TestProjectEndpoints(BaseAPITest):
             )
 
     def test_permissions_required_trainer(self):
-        #The user is not trainer, it will throw 403 error
+        # The user is not trainer, it will throw 403 error
         endpoints = (
             ("POST", "/trainers/exercise"),
             ("POST", "/trainers/program")
@@ -106,7 +104,7 @@ class TestProjectEndpoints(BaseAPITest):
             ("GET", "/user/program/1")
         )
 
-        #Setting the user to another role, because 403 error is expected
+        # Setting the user to another role, because 403 error is expected
         user = UserFactory(role=RoleType.admin)
 
         self.base_permissions_test(endpoints, user)
@@ -150,7 +148,7 @@ class TestRegisterSchema(BaseAPITest):
 
     def test_register_schema_invalid_email(self):
         # Invalid email format
-        #user = UserFactory(email="kiro")
+        # user = UserFactory(email="kiro")
         data = self.base_user()
         data["email"] = "kiro"
 
@@ -160,10 +158,9 @@ class TestRegisterSchema(BaseAPITest):
 
         self.base_register_invalid_field(data, expected_message)
 
-
     def test_register_schema_invalid_password(self):
         data = self.base_user()
-        #Too short password
+        # Too short password
         data["password"] = "Kb1#"
 
         expected_message = {
@@ -173,22 +170,16 @@ class TestRegisterSchema(BaseAPITest):
 
         self.base_register_invalid_field(data, expected_message)
 
-        data["password"] = "spas12345#" #No uppercase
+        data["password"] = "spas12345#"  # No uppercase
         self.base_register_invalid_field(data, expected_message)
 
-        data["password"] = "Spas#!@>?+_*" #No digits
+        data["password"] = "Spas#!@>?+_*"  # No digits
         self.base_register_invalid_field(data, expected_message)
 
-        data["password"] = "Spas12345" #No special chars
+        data["password"] = "Spas12345"  # No special chars
         self.base_register_invalid_field(data, expected_message)
 
-        data["password"] = ("SpasSpasSpasSpasSpasSpasSpasSpasSpas"
-                            "SpasSpasSpasSpasSpasSpasSpasSpasSpasSpas"
-                            "SpasSpasSpasSpasSpasSpasSpasSpasSpasSpas"
-                            "SpasSpasSpasSpasSpasSpasSpasSpasSpasSpas"
-                            "SpasSpasSpasSpasSpasSpasSpasSpasSpasSpas"
-                            "SpasSpasSpasSpasSpasSpasSpasSpasSpasSpas"
-                            "SpasSpasSpasSpasSpasSpasSpasSpasSpasSpasSpas")
+        data["password"] = "Spas" * 100
         expected_message = {
             'message':
                 "Invalid fields {'password': ['Longer than maximum length 225.', "
@@ -198,7 +189,7 @@ class TestRegisterSchema(BaseAPITest):
 
     def test_register_schema_invalid_names(self):
         data = self.base_user()
-        #The names are too short
+        # The names are too short
         data["first_name"] = "K"
         data["last_name"] = "B"
 
@@ -210,8 +201,8 @@ class TestRegisterSchema(BaseAPITest):
 
         self.base_register_invalid_field(data, expected_message)
 
-        data["first_name"] = "S" * 300 #Too long
-        data["last_name"] = data["first_name"] #Too long
+        data["first_name"] = "S" * 300  # Too long
+        data["last_name"] = data["first_name"]  # Too long
         self.base_register_invalid_field(data, expected_message)
 
     def test_register_database_changes(self):
@@ -263,12 +254,12 @@ class TestLoginSchemas(BaseAPITest):
         self.assertEqual(resp.json, expected_message)
 
     def test_login_invalid_email(self):
-        #First we have to register a user
+        # First we have to register a user
         data = self.base_user()
         self.base_register_test(data, 201)
 
         login_data = {
-            "email": "kiro", #In wrong format
+            "email": "kiro",  # In wrong format
             "password": data["password"]
         }
         resp = self.client.post("/login", json=login_data)
@@ -295,7 +286,7 @@ class TestLoginSchemas(BaseAPITest):
 
         login_data = {
             "email": data["email"],
-            "password": "Tosho" #Invalid format
+            "password": "Tosho"  # Invalid format
         }
 
         resp = self.client.post("/login", json=login_data)

@@ -1,5 +1,5 @@
-from unittest.mock import patch
 import copy
+from unittest.mock import patch
 
 from db import db
 from models import ExerciseModel, RoleType, UserModel
@@ -9,7 +9,6 @@ from tests.factories import UserFactory, ExerciseFactory
 
 
 class TestGettingExercises(BaseAPITest):
-
     GET_ALL_ENDPOINT = "/exercise"
     GET_SPECIFIC_ENDPOINT = "exercise/1"
 
@@ -47,7 +46,6 @@ class TestGettingExercises(BaseAPITest):
             self.GET_SPECIFIC_ENDPOINT,
             {"message": "There is not exercise with this pk"}
         )
-
 
     def base_get_exercises_successfully(self, endpoint, user: UserModel, ex_2=None):
         ex_1 = ExerciseFactory()
@@ -115,8 +113,8 @@ class TestGettingExercises(BaseAPITest):
 
     def test_get_specific_exercise_successfully_as_higher_role(self):
         for i, role in enumerate([RoleType.super_user,
-                     RoleType.trainer,
-                     RoleType.admin]):
+                                  RoleType.trainer,
+                                  RoleType.admin]):
             user: UserModel = UserFactory(role=role)
 
             self.base_get_exercises_successfully(
@@ -126,7 +124,6 @@ class TestGettingExercises(BaseAPITest):
 
 
 class TestCreatingExercise(BaseAPITest):
-
     ENDPOINT = "/trainers/exercise"
 
     VALID_EXERCISE_DATA = {
@@ -179,7 +176,7 @@ class TestCreatingExercise(BaseAPITest):
         return resp
 
     def test_create_exercise_missing_data(self):
-        #Testing with empty data
+        # Testing with empty data
         data = {}
         resp = self.base_create_exercise_invalid_schema(data)
 
@@ -193,7 +190,7 @@ class TestCreatingExercise(BaseAPITest):
         )
 
     def test_create_exercise_invalid_name(self):
-        #Name is too short
+        # Name is too short
         data = copy.deepcopy(self.VALID_EXERCISE_DATA)
         data["name"] = "BP"
 
@@ -213,7 +210,7 @@ class TestCreatingExercise(BaseAPITest):
             0
         )
 
-        #Name is too long
+        # Name is too long
         data["name"] = "BP" * 26
         resp = self.base_create_exercise_invalid_schema(data)
 
@@ -228,7 +225,7 @@ class TestCreatingExercise(BaseAPITest):
         )
 
     def test_create_exercise_invalid_description(self):
-        #Description is not long enough
+        # Description is not long enough
         data = copy.deepcopy(self.VALID_EXERCISE_DATA)
         data["description"] = "Too short description"
 
@@ -249,7 +246,7 @@ class TestCreatingExercise(BaseAPITest):
         )
 
     def test_create_exercise_invalid_author_name(self):
-        #Missing last name
+        # Missing last name
         data = copy.deepcopy(self.VALID_EXERCISE_DATA)
         data["author"] = "Kiro"
 
@@ -262,7 +259,7 @@ class TestCreatingExercise(BaseAPITest):
         for field in expected_fields:
             self.assertIn(field, str(resp.json))
 
-        #Too short first name
+        # Too short first name
         data["author"] = "K Breika"
         resp = self.base_create_exercise_invalid_schema(data)
         expected_fields = [
@@ -284,7 +281,7 @@ class TestCreatingExercise(BaseAPITest):
         for field in expected_fields:
             self.assertIn(field, str(resp.json))
 
-        #Both names are too short
+        # Both names are too short
         data["author"] = "K B"
         resp = self.base_create_exercise_invalid_schema(data)
         expected_fields = [
@@ -295,7 +292,7 @@ class TestCreatingExercise(BaseAPITest):
         for field in expected_fields:
             self.assertIn(field, str(resp.json))
 
-        #First name is too long
+        # First name is too long
         data["author"] = f"{'K' * 101} Breika"
         resp = self.base_create_exercise_invalid_schema(data)
         expected_fields = [
@@ -306,8 +303,7 @@ class TestCreatingExercise(BaseAPITest):
         for field in expected_fields:
             self.assertIn(field, str(resp.json))
 
-
-        #Last name is too long
+        # Last name is too long
         data["author"] = f"Kiro {'B' * 101}"
         resp = self.base_create_exercise_invalid_schema(data)
         expected_fields = [
@@ -318,8 +314,7 @@ class TestCreatingExercise(BaseAPITest):
         for field in expected_fields:
             self.assertIn(field, str(resp.json))
 
-
-        #Both names are too long
+        # Both names are too long
         data["author"] = f"{'K' * 101} {'B' * 101}"
         resp = self.base_create_exercise_invalid_schema(data)
         expected_fields = [
@@ -354,7 +349,7 @@ class TestCreatingExercise(BaseAPITest):
             "description",
             "photo_tutorial",
             "video",
-            #Checking if it's the correct exercise
+            # Checking if it's the correct exercise
             "Bench press"
         ]
 
@@ -400,7 +395,7 @@ class TestCreatingExercise(BaseAPITest):
             1
         )
 
-        #Using the same data, with the same names
+        # Using the same data, with the same names
         new_data = data
 
         resp = self.client.post(
@@ -424,7 +419,6 @@ class TestCreatingExercise(BaseAPITest):
 
 
 class TestDeleteExercise(BaseAPITest):
-
     ENDPOINT = "/admin/delete/exercise/1"
 
     def test_delete_exercise_unauthenticated(self):
@@ -474,7 +468,6 @@ class TestDeleteExercise(BaseAPITest):
                     "There is no exercise with this pk"
             }
         )
-
 
     def test_delete_exercise_successfully(self):
         exercise = ExerciseFactory()

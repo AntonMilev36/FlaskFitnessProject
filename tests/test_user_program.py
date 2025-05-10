@@ -4,7 +4,6 @@ from tests.factories import UserFactory, ProgramFactory
 
 
 class TestAddProgramUser(BaseAPITest):
-
     PROG_USER_ENDPOINT = "/user/add/program/1"
 
     def test_add_program_to_user_unauthenticated(self):
@@ -105,7 +104,6 @@ class TestAddProgramUser(BaseAPITest):
 
 
 class TestGetUserPrograms(BaseAPITest):
-
     GET_ALL_ENDPOINT = "/user/program"
     GET_SPECIFIC_ENDPOINT = "/user/program/1"
 
@@ -234,7 +232,6 @@ class TestGetUserPrograms(BaseAPITest):
 
 
 class TestUserDeleteProgram(BaseAPITest):
-
     ENDPOINT = "user/delete/program/1"
     ADD_PROGRAM_ENDPOINT = "/user/add/program/1"
 
@@ -296,7 +293,7 @@ class TestUserDeleteProgram(BaseAPITest):
         program = ProgramFactory()
         header = self.create_token_and_header()
 
-        #First need to add program to the user, so it can be removed
+        # First need to add program to the user, so it can be removed
         self.client.post(
             f"{self.ADD_PROGRAM_ENDPOINT[:-1]}{program.pk}",
             headers=header

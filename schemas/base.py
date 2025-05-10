@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validate
 
-from utils.validators import password_validator #, validate_email
+from utils.validators import password_validator  # , validate_email
 
 
 class BaseUserSchema(Schema):
@@ -13,6 +13,7 @@ class BaseUserSchema(Schema):
             validate.Length(max=225),
             password_validator)
     )
+
 
 class BaseProgramSchema(Schema):
     title = fields.String(

@@ -6,7 +6,6 @@ from tests.factories import UserFactory, ExerciseFactory, ProgramFactory
 
 
 class TestCreateProgram(BaseAPITest):
-
     ENDPOINT = "/trainers/program"
 
     VALID_PROGRAM_DATA = {
@@ -75,7 +74,7 @@ class TestCreateProgram(BaseAPITest):
         data = copy.deepcopy(
             self.VALID_PROGRAM_DATA
         )
-        #Title is too short
+        # Title is too short
         data["title"] = "Le"
 
         resp = self.base_program_schema_test(data)
@@ -100,7 +99,7 @@ class TestCreateProgram(BaseAPITest):
             0
         )
 
-        #Title is too long
+        # Title is too long
         data["title"] = "Legs" * 13
 
         resp = self.base_program_schema_test(data)
@@ -201,7 +200,6 @@ class TestCreateProgram(BaseAPITest):
 
 
 class GetPrograms(BaseAPITest):
-
     GET_ALL_ENDPOINT = "/program"
     GET_SPECIFIC_ENDPOINT = "/program/1"
 
@@ -309,7 +307,6 @@ class GetPrograms(BaseAPITest):
 
 
 class TestDeletePrograms(BaseAPITest):
-
     ENDPOINT = "admin/delete/program/1"
 
     def test_delete_program_unauthenticated(self):

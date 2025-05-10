@@ -25,7 +25,6 @@ class BaseFactory(factory.Factory):
 
 
 class UserFactory(BaseFactory):
-
     class Meta:
         model = UserModel
 
@@ -55,13 +54,12 @@ class ProgramFactory(BaseFactory):
 
     title = "Full Body"
 
-
     @factory.post_generation
     def exercise(self, create, extended=None, **kwargs):
         if not create:
             return
 
-        #self.exercises is the ProgramModel attribute
+        # self.exercises is the ProgramModel attribute
         self.exercises.append(
             ExerciseFactory()
         )

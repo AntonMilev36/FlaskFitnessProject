@@ -8,7 +8,7 @@ class CreateExerciseRequest(Schema):
     description = fields.String(required=True, validate=validate.And(validate.Length(min=50)))
     tutorial_photo = fields.String(required=True)
     tutorial_extension = fields.String(required=True)
-    #TODO Video is Base64, change it
+    # TODO Video is Base64, change it
     video_example = fields.String(required=True)
     video_extension = fields.String(required=True)
     author = fields.String(required=True, validate=validate_full_name)

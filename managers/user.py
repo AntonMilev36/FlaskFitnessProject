@@ -92,4 +92,3 @@ class UserManager(Resource):
 
         db.session.delete(user_program)
         db.session.flush()
-
