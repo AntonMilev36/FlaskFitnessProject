@@ -84,4 +84,4 @@ Intended for **educational and demo purposes**.
 ## 🙋‍♂️ Author
 **Anton Milev**
 
-GitHub: https://github.com/AntonMilev36/FlaskFitnessProject
+GitHub: https://github.com/AntonMilev36
