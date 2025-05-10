@@ -236,6 +236,7 @@ class TestGetUserPrograms(BaseAPITest):
 class TestUserDeleteProgram(BaseAPITest):
 
     ENDPOINT = "user/delete/program/1"
+    ADD_PROGRAM_ENDPOINT = "/user/add/program/1"
 
     def test_delete_program_unauthenticated(self):
         self.base_unauthenticated_test(
@@ -266,14 +267,44 @@ class TestUserDeleteProgram(BaseAPITest):
             resp.json,
             {
                 "message":
-                    "This program doesn't exist or "
-                    "is not added to your list"
+                    "Program with pk=1 doesn't exist"
+            }
+        )
+
+    def test_delete_user_program_not_in_user_list(self):
+        program = ProgramFactory()
+        header = self.create_token_and_header()
+
+        resp = self.client.delete(
+            f"{self.ENDPOINT[:-1]}{program.pk}",
+            headers=header
+        )
+
+        self.assertEqual(
+            resp.status_code,
+            404
+        )
+        self.assertEqual(
+            resp.json,
+            {
+                "message":
+                    f"This program is not in your list"
             }
         )
 
     def test_delete_user_program_successfully(self):
         program = ProgramFactory()
         header = self.create_token_and_header()
+
+        #First need to add program to the user, so it can be removed
+        self.client.post(
+            f"{self.ADD_PROGRAM_ENDPOINT[:-1]}{program.pk}",
+            headers=header
+        )
+        self.objects_count_in_database(
+            UserProgram,
+            1
+        )
 
         resp = self.client.delete(
             f"{self.ENDPOINT[:-1]}{program.pk}",
@@ -291,7 +322,6 @@ class TestUserDeleteProgram(BaseAPITest):
                     f"Program with pk={program.pk} is deleted successfully"
             }
         )
-
         self.objects_count_in_database(
             UserProgram,
             0

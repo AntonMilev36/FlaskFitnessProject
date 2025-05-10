@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import db
 from managers.auth import AuthManager
-from models import ProgramModel
+from models import ProgramModel, UserProgram
 from models.enums import RoleType
 from models.user import UserModel
 
@@ -68,13 +68,28 @@ class UserManager(Resource):
         return program.pop()
 
     @staticmethod
-    def user_delete_program(program_pk):
+    def user_delete_program(program_pk, user):
         program = db.session.execute(
             db.select(ProgramModel).filter_by(pk=program_pk)
         ).scalar_one_or_none()
 
         if program is None:
             raise NotFound(
-                "This program doesn't exist or is not added to your list"
+                f"Program with pk={program_pk} doesn't exist"
             )
+
+        user_program = db.session.execute(
+            db.select(UserProgram).filter_by(
+                user_pk=user.pk,
+                program_pk=program_pk
+            )
+        ).scalar_one_or_none()
+
+        if user_program is None:
+            raise NotFound(
+                "This program is not in your list"
+            )
+
+        db.session.delete(user_program)
+        db.session.flush()
 

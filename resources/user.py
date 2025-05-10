@@ -47,7 +47,11 @@ class UserDeleteProgram(Resource):
     @auth.login_required
     @permission_required([RoleType.user, RoleType.super_user])
     def delete(self, program_pk):
-        UserManager.user_delete_program(program_pk)
+        user = auth.current_user()
+        UserManager.user_delete_program(
+            program_pk,
+            user
+        )
 
         return {
             "message":
