@@ -1,6 +1,6 @@
 # Fitness Management System 🏋️‍♂️
 
-A Flask-based RESTful API for managing a fitness platform.
+**A Flask-based RESTful API** for managing a fitness platform.
 The system allows users to sign up, subscribe to plans, 
 access exercises, and track progress, with separate roles 
 for admins, trainers, and clients.
