@@ -41,17 +41,9 @@ pipeline {
             steps {
                 sh '''
                     . $VENV/bin/activate
-                    pytest --maxfail=1 --disable-warnings -q --junitxml=test-results/results.xml
+                    pytest --maxfail=1 --disable-warnings -q
                 '''
             }
         }
     }
 
-    post {
-        always {
-            node {
-                junit 'test-results/results.xml'
-            }
-        }
-    }
-}
