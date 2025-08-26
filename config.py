@@ -50,4 +50,5 @@ def create_app(environment):
 
     [api.add_resource(*route) for route in routes]
 
-    return app
+    # Adding .run so the app can work via container
+    return app.run(host="0.0.0.0", port=5000)

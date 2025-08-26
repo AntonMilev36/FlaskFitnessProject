@@ -21,8 +21,8 @@ class PaymentManager:
                 "intent": "sale",
                 "payer": {"payment_method": "paypal"},
                 "redirect_urls": {
-                    "return_url": f"{config("CLIENT_URL")}/success?user_pk={user_pk}",
-                    "cancel_url": f"{config("CLIENT_URL")}/cancel",
+                    "return_url": f"{config('CLIENT_URL')}/success?user_pk={user_pk}",
+                    "cancel_url": f"{config('CLIENT_URL')}/cancel",
                 },
                 "transactions": [
                     {
