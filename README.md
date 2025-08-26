@@ -43,7 +43,7 @@ pytest
 
 ```bash
 git clone https://github.com/AntonMilev36/FlaskFitnessProject.git
-cd fitness-system
+cd FlaskFitnessProject
 ```
 
 ### 2. Create a virtual environment
