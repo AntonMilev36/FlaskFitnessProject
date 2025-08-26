@@ -42,7 +42,7 @@ pytest
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/fitness-system.git
+git clone https://github.com/AntonMilev36/FlaskFitnessProject.git
 cd fitness-system
 ```
 
